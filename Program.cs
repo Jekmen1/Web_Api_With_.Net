@@ -19,6 +19,6 @@ else
     app.UseHttpsRedirection();
 }
 
-app.MapControllers(); // Ensures controller endpoints are mapped
+app.MapControllers(); 
 
 app.Run();
