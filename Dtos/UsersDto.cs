@@ -1,8 +1,7 @@
-namespace DotNetApi.Models
+namespace DotNetApi.Dtos
 {
-    public partial class User
+    public partial class UserAddDto
     {
-        public int UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -10,7 +9,7 @@ namespace DotNetApi.Models
         public bool Active { get; set; }
 
 
-        public User()
+        public UserAddDto()
         {
             if(FirstName == null)
             {
