@@ -5,40 +5,40 @@ namespace DotNetApi.Data
 {
     public class DataContextEF : DbContext
     {
-        private readonly IConfiguration _congif;
+        private readonly IConfiguration _config;
 
         public DataContextEF(IConfiguration config)
         {
-            _congif = config;
+            _config = config;
         }
 
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserSalary> UsersSalary { get; set; }
         public virtual DbSet<UserJobInfo> UsersJobInfo { get; set; }
 
-        protected override void onConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (optionsBuilder.IsConfigured)
+            if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder
-                    .UseSqlServer(_congif.GetConnectionString("DefaultConnection"),
+                    .UseSqlServer(_config.GetConnectionString("DefaultConnection"),
                         optionsBuilder => optionsBuilder.EnableRetryOnFailure());
             }
         }
 
-        protected override void OnModelCreating(ModelBuilder modelbuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelbuilder.HasDefaultSchema("TutorialAppSchema");
-            modelbuilder.Entity<User>()
+            modelBuilder.HasDefaultSchema("TutorialAppSchema");
+            
+            modelBuilder.Entity<User>()
                 .ToTable("Users", "TutorialAppSchema")
-                .HasKey(u => u.UserId)
-        
-            modelbuilder.Entity<UserJobInfo>()
-                .HasKey(u => u.UserId)  
+                .HasKey(u => u.UserId); 
+            
+            modelBuilder.Entity<UserJobInfo>()
+                .HasKey(u => u.UserId); 
 
-            modelbuilder.Entity<UserSalary>()
-                .HasKey(u => u.UserId)      
+            modelBuilder.Entity<UserSalary>()
+                .HasKey(u => u.UserId); 
         }
-
     }
 }
