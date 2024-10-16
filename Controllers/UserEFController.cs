@@ -12,9 +12,15 @@ namespace DotNetApi.Controllers
     {
         private readonly DataContextEF _entityFramework;
 
+        IMapper _mapper;
+
         public UserEFController(IConfiguration config)
         {
             _entityFramework = new DataContextEF(config);
+
+            _mapper = new Mapper(new MapperConfiguration(cfg => {
+                cfg.CreateMap<UserAddDto, User>();
+            }));
         }
 
         [HttpGet("GetUsers")]
@@ -65,14 +71,9 @@ namespace DotNetApi.Controllers
         [HttpPost("AddUser")]
         public IActionResult AddUser(UserAddDto user)
         {
-            User userDb = new User
-            {
-                Active = user.Active,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Gender = user.Gender
-            };
+            User userDb = _mapper.Map<User>(user);
+            
+            
 
             _entityFramework.Users.Add(userDb);
 
