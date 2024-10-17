@@ -1,6 +1,6 @@
 namespace DotNetApi.Data
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         DataContextEF _entityFramework;
 
@@ -25,5 +25,18 @@ namespace DotNetApi.Data
             }
             // return false;
         } 
+
+
+        public void RemoveEntity<T>(T entityToAdd)
+
+        // public bool AddEntity<T>(T entityToAdd)
+        {
+            if(entityToAdd != null)
+            {
+                _entityFramework.Remove(entityToAdd);
+                // return true;
+            }
+            // return false;
+        }         
     }
 }
