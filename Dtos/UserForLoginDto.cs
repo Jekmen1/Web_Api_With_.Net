@@ -1,6 +1,6 @@
 namespace DotNetApi.Models
 {
-    partial class UserForLoginDto
+    public partial class UserForLoginDto
     {
         string Email { get; set; }
 

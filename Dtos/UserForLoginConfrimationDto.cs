@@ -1,10 +1,10 @@
 namespace DotNetApi.Dtos
 {
-    partial class UserForLoginConfrimationDto
+    public partial class UserForLoginConfrimationDto
     {
-        byte[] PasswordHash { get; set; }
+        public byte[] PasswordHash { get; set; }
 
-        byte[] PasswordSalt { get; set; }
+        public byte[] PasswordSalt { get; set; }
 
         UserForLoginConfrimationDto()
         {
