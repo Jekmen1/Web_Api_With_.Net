@@ -1,10 +1,13 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Dapper;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+
 
 namespace DotNetApi.Data
 {
-    class DataContextDapper
+    public class DataContextDapper
     {
         private readonly IConfiguration _config;
 
@@ -19,7 +22,7 @@ namespace DotNetApi.Data
             return dbConnection.Query<T>(sql);
         }
 
-        public T LoadDataSingle<T>(string sql) 
+        public T LoadDataSingle<T>(string sql)
         {
             using IDbConnection dbConnection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
             return dbConnection.QuerySingle<T>(sql);
@@ -39,20 +42,18 @@ namespace DotNetApi.Data
 
         public bool ExecuteSqlWithParameters(string sql, List<SqlParameter> parameters)
         {
-            SqlCommand commandWithParams = new SqlCommand(sql);
+            using IDbConnection dbConnection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+            using SqlCommand commandWithParams = new SqlCommand(sql);
 
-            foreach(SqlParameter parameter in parameters)
+            foreach (SqlParameter parameter in parameters)
             {
                 commandWithParams.Parameters.Add(parameter);
             }
 
-            IDbConnection dbConnection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
             dbConnection.Open();
-
-            commandWithParams.Connection = dbConnection;
+            commandWithParams.Connection = (SqlConnection)dbConnection;
 
             int rowsAffected = commandWithParams.ExecuteNonQuery();
-
             dbConnection.Close();
 
             return rowsAffected > 0;

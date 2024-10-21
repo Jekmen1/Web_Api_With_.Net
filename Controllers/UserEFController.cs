@@ -3,6 +3,7 @@ using System.Linq;
 using DotNetApi.Data;
 using DotNetApi.Models;
 using DotNetApi.Dtos;
+using AutoMapper;
 
 namespace DotNetApi.Controllers
 {
@@ -101,7 +102,7 @@ namespace DotNetApi.Controllers
         }
 
         [HttpGet("UserSalary/{userId}")]
-        public IEnumerable GetUserSalaryEF(int userId)
+        public IEnumerable<decimal> GetUserSalaryEF(int userId)
         {
             return _userRepository.GetSingleUserSalary(userId);
         }
@@ -109,12 +110,12 @@ namespace DotNetApi.Controllers
         [HttpPost("UserSalary")]
         public IActionResult PostUserSalaryEf(UserSalary userForInsert)
         {
-            _userRepository.AddEntity<UserSalary>(yuserForInsert)
+            _userRepository.AddEntity<UserSalary>(yuserForInsert);
             if (_userRepository.SaveChanges())
             {
                 return Ok();
             }
-            throw new Exception("Adding UserSalary failed on save")
+            throw new Exception("Adding UserSalary failed on save");
 
         }
 
@@ -161,14 +162,14 @@ namespace DotNetApi.Controllers
         }
 
         [HttpPost("UserJobInfo")]
-        public IActionResult PostUserUserJobInfoEf(UserUserJobInfo userForInsert)
+        public IActionResult PostUserJobInfoEf(UserJobInfo userForInsert)
         {
-            _userRepository.AddEntity<UserJobInfo>(userForInsert)
+            _userRepository.AddEntity<UserJobInfo>(userForInsert);
             if (_userRepository.SaveChanges())
             {
                 return Ok();
             }
-            throw new Exception("Adding UserSalary failed on save")
+            throw new Exception("Adding UserSalary failed on save");
 
         }
 
@@ -186,7 +187,7 @@ namespace DotNetApi.Controllers
                     return Ok();
                 }
 
-                throw new Exception("fail to update")
+                throw new Exception("fail to update");
             }
 
         }
